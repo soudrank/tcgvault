@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/psa-population",
+      "schedule": "0 3 * * 0"
+    }
+  ]
+}
