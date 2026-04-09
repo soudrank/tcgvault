@@ -1,4 +1,5 @@
 import '../app.css';
+import { redirect } from 'next/navigation';
 import Sidebar from '@/components/layout/Sidebar';
 import MobileHeader from '@/components/layout/MobileHeader';
 import SidebarHandler from '@/components/layout/SidebarHandler';
@@ -13,6 +14,10 @@ export default async function AppLayout({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
+  if (!user) {
+    redirect('/login');
+  }
+
   let cardCount = 0;
   try {
     const cards = await getCards();
@@ -21,7 +26,7 @@ export default async function AppLayout({
     // ignore
   }
 
-  const email = user?.email ?? '';
+  const email = user.email ?? '';
   const userInitial = email ? email[0].toUpperCase() : 'U';
 
   return (
