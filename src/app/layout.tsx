@@ -17,7 +17,7 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
-  title: 'TCGVault - トレカ投資・資産管理',
+  title: 'Trecaru - トレカ投資・資産管理',
   description: 'トレーディングカードの投資・資産管理アプリ',
 };
 

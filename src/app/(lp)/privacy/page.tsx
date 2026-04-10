@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'プライバシーポリシー | TCGVault',
+  title: 'プライバシーポリシー | Trecaru',
 };
 
 export default function PrivacyPage() {
@@ -10,7 +10,7 @@ export default function PrivacyPage() {
       <div className="noise" />
       <nav style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '16px 0' }}>
         <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link href="/" className="font-display font-[800] text-lg tracking-tight gold-text">TCGVault</Link>
+          <Link href="/" className="font-display font-[800] text-lg tracking-tight gold-text">Trecaru</Link>
           <Link href="/" className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>TOPに戻る</Link>
         </div>
       </nav>
@@ -21,7 +21,7 @@ export default function PrivacyPage() {
 
         <div className="legal-content">
           <p>
-            TCGVault（以下「当サービス」）は、ユーザーの個人情報の保護を重要と考え、
+            Trecaru（以下「当サービス」）は、ユーザーの個人情報の保護を重要と考え、
             以下のプライバシーポリシーに従い適切に取り扱います。
           </p>
 

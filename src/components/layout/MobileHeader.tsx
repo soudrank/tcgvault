@@ -19,7 +19,7 @@ export default function MobileHeader() {
         <Icon icon="mdi:menu" width={22} />
       </button>
       <a href="/" className="font-display font-[700] text-base tracking-tight gold-text no-underline">
-        TCGVault
+        Trecaru
       </a>
       <div className="flex-1" />
     </div>

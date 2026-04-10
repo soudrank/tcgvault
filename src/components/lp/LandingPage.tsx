@@ -128,7 +128,7 @@ export default function LandingPage() {
         <nav ref={navRef} className="nav-glass fixed top-0 left-0 right-0 z-50 transition-all duration-300">
           <div className="max-w-[1340px] mx-auto px-6 h-16 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
-              <span className="font-display font-[800] text-2xl tracking-tight gold-text">TCGVault</span>
+              <span className="font-display font-[800] text-2xl tracking-tight gold-text">Trecaru</span>
             </Link>
             <div className="hidden md:flex items-center gap-8">
               <a href="#features" className="text-sm text-white/50 hover:text-white/90 transition-colors">機能</a>
@@ -514,7 +514,7 @@ export default function LandingPage() {
                 <div className="bg-surface-900/60 rounded-xl p-4 border border-white/5 font-mono">
                   <div className="flex items-center gap-2 mb-3">
                     <span className="iconify text-white/20" data-icon="mdi:file-delimited" data-width="14" />
-                    <span className="text-[10px] text-white/30">tcgvault_report_2025.csv</span>
+                    <span className="text-[10px] text-white/30">trecaru_report_2025.csv</span>
                   </div>
                   <div className="space-y-1 text-[10px] leading-relaxed">
                     <div className="text-gold-400/60">日付,カード名,購入額,売却額,利益</div>
@@ -595,7 +595,7 @@ export default function LandingPage() {
               <div className="flex items-center justify-between px-6 py-3.5 border-b border-white/5">
                 <div className="flex items-center gap-3">
                   <div className="flex gap-1.5"><div className="w-3 h-3 rounded-full bg-white/10" /><div className="w-3 h-3 rounded-full bg-white/10" /><div className="w-3 h-3 rounded-full bg-white/10" /></div>
-                  <span className="text-[11px] text-white/20 font-display ml-2">app.tcgvault.jp/dashboard</span>
+                  <span className="text-[11px] text-white/20 font-display ml-2">trecaru.com/dashboard</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="w-6 h-6 rounded-full bg-surface-500 border border-white/10 flex items-center justify-center"><span className="iconify text-white/30" data-icon="mdi:bell-outline" data-width="12" /></div>
@@ -766,7 +766,7 @@ export default function LandingPage() {
           <div className="max-w-[1340px] mx-auto px-6">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-2">
-                <span className="font-display font-[800] text-lg tracking-tight gold-text">TCGVault</span>
+                <span className="font-display font-[800] text-lg tracking-tight gold-text">Trecaru</span>
                 <span className="text-[10px] text-white/15 ml-2">Trading Card Portfolio Manager</span>
               </div>
               <div className="flex items-center gap-6">
@@ -774,7 +774,7 @@ export default function LandingPage() {
                 <Link href="/privacy" className="text-xs text-white/25 hover:text-white/50 transition-colors">プライバシーポリシー</Link>
                 <Link href="/contact" className="text-xs text-white/25 hover:text-white/50 transition-colors">お問い合わせ</Link>
               </div>
-              <div className="text-[11px] text-white/15">© 2025 TCGVault. All rights reserved.</div>
+              <div className="text-[11px] text-white/15">© 2025 Trecaru. All rights reserved.</div>
             </div>
           </div>
         </footer>
