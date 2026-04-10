@@ -47,7 +47,7 @@ export default function Sidebar({ cardCount, userInitial = 'T', userName = '' }:
         <div className="sidebar-logo">
           <Link href="/" className="no-underline">
             <span className="font-display font-[800] text-xl tracking-tight gold-text">
-              Trecaru
+              Trecahub
             </span>
           </Link>
           <div className="font-display text-[9px] mt-0.5 tracking-wider" style={{ color: 'rgba(255,255,255,0.1)' }}>

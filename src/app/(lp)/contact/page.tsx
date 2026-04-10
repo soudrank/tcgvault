@@ -38,7 +38,7 @@ export default function ContactPage() {
       <div className="noise" />
       <nav style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '16px 0' }}>
         <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Link href="/" className="font-display font-[800] text-lg tracking-tight gold-text">Trecaru</Link>
+          <Link href="/" className="font-display font-[800] text-lg tracking-tight gold-text">Trecahub</Link>
           <Link href="/" className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>TOPに戻る</Link>
         </div>
       </nav>

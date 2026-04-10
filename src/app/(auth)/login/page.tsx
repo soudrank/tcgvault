@@ -35,7 +35,7 @@ export default function LoginPage() {
           <h1
             className="font-display text-2xl font-[800] gold-text tracking-tight"
           >
-            Trecaru
+            Trecahub
           </h1>
           <p className="mt-1 text-sm" style={{ color: 'rgba(255,255,255,0.3)' }}>
             トレカ投資・資産管理

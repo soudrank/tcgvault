@@ -12,7 +12,7 @@ export default async function Header() {
     <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-border bg-card-bg px-4 md:justify-end md:px-6">
       {/* モバイルのみ: ロゴ */}
       <Link href="/" className="text-lg font-bold text-foreground md:hidden">
-        Trecaru
+        Trecahub
       </Link>
 
       <UserMenu email={user.email ?? ''} />
