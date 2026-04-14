@@ -12,6 +12,7 @@ interface PsaCertResponse {
   ServerMessage?: string;
   PSACert?: {
     CertNumber: string;
+    SpecID?: number;
     Subject: string;
     Brand: string;
     CardGrade: string;
@@ -22,6 +23,33 @@ interface PsaCertResponse {
   };
 }
 
+interface PsaPopResponse {
+  SpecID?: number;
+  Description?: string;
+  PSAPop?: Record<string, number>;
+}
+
+function parseGradeBreakdown(pop: Record<string, number>): Record<string, number> {
+  const result: Record<string, number> = {};
+  for (const [key, value] of Object.entries(pop)) {
+    if (typeof value !== 'number' || value <= 0) continue;
+    if (key === 'Total') continue;
+    if (key.endsWith('Q')) continue;
+
+    if (key === 'Auth') {
+      result.auth = value;
+      continue;
+    }
+
+    const match = key.match(/^Grade(\d+)(?:_(\d+))?$/);
+    if (match) {
+      const gradeStr = match[2] ? `${match[1]}.${match[2]}` : match[1];
+      result[gradeStr] = value;
+    }
+  }
+  return result;
+}
+
 export async function fetchPsaCertData(certNumber: string): Promise<PsaCertResult | null> {
   const token = process.env.PSA_API_TOKEN;
   if (!token) {
@@ -29,35 +57,48 @@ export async function fetchPsaCertData(certNumber: string): Promise<PsaCertResul
     return null;
   }
 
+  const headers = { Authorization: `bearer ${token}` };
+
   try {
-    const res = await fetch(
+    const certRes = await fetch(
       `${PSA_API_BASE}/cert/GetByCertNumber/${certNumber}`,
-      {
-        method: 'GET',
-        headers: {
-          'Authorization': `bearer ${token}`,
-        },
-        signal: AbortSignal.timeout(15_000),
-      }
+      { method: 'GET', headers, signal: AbortSignal.timeout(15_000) }
     );
 
-    if (!res.ok) {
-      console.error('[PSA API] Error:', res.status);
+    if (!certRes.ok) {
+      console.error('[PSA API] Cert error:', certRes.status);
       return null;
     }
 
-    const data: PsaCertResponse = await res.json();
+    const certData: PsaCertResponse = await certRes.json();
 
-    if (!data.PSACert) {
-      console.warn('[PSA API] No cert data:', data.ServerMessage ?? 'unknown');
+    if (!certData.PSACert) {
+      console.warn('[PSA API] No cert data:', certData.ServerMessage ?? 'unknown');
       return null;
     }
 
-    const cert = data.PSACert;
+    const cert = certData.PSACert;
+    let gradeBreakdown: Record<string, number> = {};
+
+    if (cert.SpecID) {
+      const popRes = await fetch(
+        `${PSA_API_BASE}/pop/GetPSASpecPopulation/${cert.SpecID}`,
+        { method: 'GET', headers, signal: AbortSignal.timeout(15_000) }
+      );
+
+      if (popRes.ok) {
+        const popData: PsaPopResponse = await popRes.json();
+        if (popData.PSAPop) {
+          gradeBreakdown = parseGradeBreakdown(popData.PSAPop);
+        }
+      } else {
+        console.error('[PSA API] Pop error:', popRes.status);
+      }
+    }
 
     return {
       totalPop: cert.TotalPopulation ?? 0,
-      gradeBreakdown: {},
+      gradeBreakdown,
       cardName: cert.Subject ?? null,
       grade: cert.CardGrade ?? null,
     };
