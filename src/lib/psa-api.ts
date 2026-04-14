@@ -7,6 +7,18 @@ export interface PsaCertResult {
   grade: string | null;
 }
 
+export interface PsaCertFetch {
+  specId: number | null;
+  cardName: string | null;
+  grade: string | null;
+  myGradePop: number;
+}
+
+export interface PsaPopulationFetch {
+  gradeBreakdown: Record<string, number>;
+  totalPop: number;
+}
+
 interface PsaCertResponse {
   IsValidRequest?: boolean;
   ServerMessage?: string;
@@ -50,60 +62,99 @@ function parseGradeBreakdown(pop: Record<string, number>): Record<string, number
   return result;
 }
 
-export async function fetchPsaCertData(certNumber: string): Promise<PsaCertResult | null> {
+function getToken(): string | null {
   const token = process.env.PSA_API_TOKEN;
   if (!token) {
     console.error('[PSA API] PSA_API_TOKEN is not set');
     return null;
   }
+  return token;
+}
 
-  const headers = { Authorization: `bearer ${token}` };
+export async function fetchPsaCert(certNumber: string): Promise<PsaCertFetch | null> {
+  const token = getToken();
+  if (!token) return null;
 
   try {
-    const certRes = await fetch(
+    const res = await fetch(
       `${PSA_API_BASE}/cert/GetByCertNumber/${certNumber}`,
-      { method: 'GET', headers, signal: AbortSignal.timeout(15_000) }
+      {
+        method: 'GET',
+        headers: { Authorization: `bearer ${token}` },
+        signal: AbortSignal.timeout(15_000),
+      }
     );
 
-    if (!certRes.ok) {
-      console.error('[PSA API] Cert error:', certRes.status);
+    if (!res.ok) {
+      console.error('[PSA API] Cert error:', res.status);
       return null;
     }
 
-    const certData: PsaCertResponse = await certRes.json();
-
-    if (!certData.PSACert) {
-      console.warn('[PSA API] No cert data:', certData.ServerMessage ?? 'unknown');
+    const data: PsaCertResponse = await res.json();
+    if (!data.PSACert) {
+      console.warn('[PSA API] No cert data:', data.ServerMessage ?? 'unknown');
       return null;
     }
 
-    const cert = certData.PSACert;
-    let gradeBreakdown: Record<string, number> = {};
-
-    if (cert.SpecID) {
-      const popRes = await fetch(
-        `${PSA_API_BASE}/pop/GetPSASpecPopulation/${cert.SpecID}`,
-        { method: 'GET', headers, signal: AbortSignal.timeout(15_000) }
-      );
-
-      if (popRes.ok) {
-        const popData: PsaPopResponse = await popRes.json();
-        if (popData.PSAPop) {
-          gradeBreakdown = parseGradeBreakdown(popData.PSAPop);
-        }
-      } else {
-        console.error('[PSA API] Pop error:', popRes.status);
-      }
-    }
-
+    const cert = data.PSACert;
     return {
-      totalPop: cert.TotalPopulation ?? 0,
-      gradeBreakdown,
+      specId: cert.SpecID ?? null,
       cardName: cert.Subject ?? null,
       grade: cert.CardGrade ?? null,
+      myGradePop: cert.TotalPopulation ?? 0,
     };
   } catch (error) {
-    console.error('[PSA API] Fetch failed:', error);
+    console.error('[PSA API] Cert fetch failed:', error);
     return null;
   }
+}
+
+export async function fetchPsaPopulation(specId: number): Promise<PsaPopulationFetch | null> {
+  const token = getToken();
+  if (!token) return null;
+
+  try {
+    const res = await fetch(
+      `${PSA_API_BASE}/pop/GetPSASpecPopulation/${specId}`,
+      {
+        method: 'GET',
+        headers: { Authorization: `bearer ${token}` },
+        signal: AbortSignal.timeout(15_000),
+      }
+    );
+
+    if (!res.ok) {
+      console.error('[PSA API] Pop error:', res.status);
+      return null;
+    }
+
+    const data: PsaPopResponse = await res.json();
+    if (!data.PSAPop) return null;
+
+    return {
+      gradeBreakdown: parseGradeBreakdown(data.PSAPop),
+      totalPop: data.PSAPop.Total ?? 0,
+    };
+  } catch (error) {
+    console.error('[PSA API] Pop fetch failed:', error);
+    return null;
+  }
+}
+
+export async function fetchPsaCertData(certNumber: string): Promise<PsaCertResult | null> {
+  const cert = await fetchPsaCert(certNumber);
+  if (!cert) return null;
+
+  let gradeBreakdown: Record<string, number> = {};
+  if (cert.specId) {
+    const pop = await fetchPsaPopulation(cert.specId);
+    if (pop) gradeBreakdown = pop.gradeBreakdown;
+  }
+
+  return {
+    totalPop: cert.myGradePop,
+    gradeBreakdown,
+    cardName: cert.cardName,
+    grade: cert.grade,
+  };
 }
