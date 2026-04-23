@@ -71,6 +71,7 @@ export async function fetchEbayPrices(
     q: query,
     limit: '30',
     category_ids: '183454',
+    filter: 'buyingOptions:{FIXED_PRICE}',
     sort: 'newlyListed',
   });
 
