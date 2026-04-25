@@ -10,13 +10,38 @@ interface EbayPriceItem {
   currency: string;
 }
 
-// USD→JPY 簡易レート
-const USD_TO_JPY = 150;
+// 為替レートキャッシュ（1時間）
+let rateCache: { rates: Record<string, number>; expiresAt: number } | null = null;
 
-function convertToJPY(amount: number, currency: string): number {
+async function getExchangeRates(): Promise<Record<string, number>> {
+  if (rateCache && Date.now() < rateCache.expiresAt) {
+    return rateCache.rates;
+  }
+  try {
+    const res = await fetch('https://api.exchangerate-api.com/v4/latest/JPY');
+    if (res.ok) {
+      const data = await res.json();
+      // data.rates は JPY基準 (例: USD=0.0094 → 1JPY=0.0094USD → 1USD=106JPY)
+      const rates: Record<string, number> = {};
+      for (const [cur, rate] of Object.entries(data.rates as Record<string, number>)) {
+        rates[cur] = 1 / rate; // 各通貨→JPYのレート
+      }
+      rates['JPY'] = 1;
+      rateCache = { rates, expiresAt: Date.now() + 3600 * 1000 };
+      return rates;
+    }
+  } catch (e) {
+    console.warn('[FX] Failed to fetch rates:', e);
+  }
+  // フォールバック（2024年末〜2026年の概算レート）
+  return { USD: 158, EUR: 170, GBP: 198, AUD: 100, CAD: 112, JPY: 1 };
+}
+
+async function convertToJPY(amount: number, currency: string): Promise<number> {
   if (currency === 'JPY') return Math.round(amount);
-  if (currency === 'USD') return Math.round(amount * USD_TO_JPY);
-  return Math.round(amount * USD_TO_JPY);
+  const rates = await getExchangeRates();
+  const rate = rates[currency] || rates['USD'] || 158;
+  return Math.round(amount * rate);
 }
 
 // OAuthトークンをキャッシュ
@@ -93,13 +118,24 @@ export async function fetchEbayPrices(
   if (!items || !Array.isArray(items)) return [];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return items
-    .filter((item: any) => item.price)
-    .map((item: any) => ({
-      price: convertToJPY(parseFloat(item.price?.value || '0'), item.price?.currency || 'USD'),
+  const filtered = items.filter((item: any) => item.price);
+  // itemIdで重複排除
+  const seen = new Set<string>();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const unique = filtered.filter((item: any) => {
+    const id = item.itemId || item.legacyItemId || item.title;
+    if (seen.has(id)) return false;
+    seen.add(id);
+    return true;
+  });
+  const mapped = await Promise.all(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    unique.map(async (item: any) => ({
+      price: await convertToJPY(parseFloat(item.price?.value || '0'), item.price?.currency || 'USD'),
       recorded_at: item.itemCreationDate || new Date().toISOString(),
       title: item.title || '',
       currency: item.price?.currency || 'USD',
-    }))
-    .filter((item: EbayPriceItem) => item.price > 0);
+    })),
+  );
+  return mapped.filter((item: EbayPriceItem) => item.price > 0);
 }

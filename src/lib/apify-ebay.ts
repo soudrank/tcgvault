@@ -7,7 +7,7 @@ interface EbaySoldItem {
   currency: string;
 }
 
-const USD_TO_JPY = 150;
+const USD_TO_JPY = 158;
 
 export async function fetchEbaySoldPrices(query: string): Promise<EbaySoldItem[]> {
   const apiToken = process.env.APIFY_API_TOKEN;
