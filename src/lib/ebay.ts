@@ -128,11 +128,13 @@ export async function fetchEbayPrices(
     seen.add(id);
     return true;
   });
+  // itemCreationDateがないアイテムは除外（偽の日付でグラフを汚さない）
+  const withDate = unique.filter((item: any) => item.itemCreationDate);
   const mapped = await Promise.all(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    unique.map(async (item: any) => ({
+    withDate.map(async (item: any) => ({
       price: await convertToJPY(parseFloat(item.price?.value || '0'), item.price?.currency || 'USD'),
-      recorded_at: item.itemCreationDate || new Date().toISOString(),
+      recorded_at: item.itemCreationDate,
       title: item.title || '',
       currency: item.price?.currency || 'USD',
     })),
