@@ -106,7 +106,7 @@ export async function fetchEbayPrices(
       Authorization: `Bearer ${token}`,
       'X-EBAY-C-MARKETPLACE-ID': 'EBAY_US',
     },
-    next: { revalidate: 3600 },
+    next: { revalidate: 0 },
   });
 
   if (!res.ok) {
