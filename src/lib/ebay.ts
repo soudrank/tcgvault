@@ -8,6 +8,7 @@ interface EbayPriceItem {
   recorded_at: string;
   title: string;
   currency: string;
+  item_url: string;
 }
 
 // 為替レートキャッシュ（1時間）
@@ -137,6 +138,7 @@ export async function fetchEbayPrices(
       recorded_at: item.itemCreationDate,
       title: item.title || '',
       currency: item.price?.currency || 'USD',
+      item_url: item.itemWebUrl || '',
     })),
   );
   return mapped.filter((item: EbayPriceItem) => item.price > 0);
