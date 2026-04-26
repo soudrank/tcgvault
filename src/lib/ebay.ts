@@ -106,7 +106,7 @@ export async function fetchEbayPrices(
       Authorization: `Bearer ${token}`,
       'X-EBAY-C-MARKETPLACE-ID': 'EBAY_US',
     },
-    next: { revalidate: 0 },
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) {
@@ -129,14 +129,6 @@ export async function fetchEbayPrices(
     seen.add(id);
     return true;
   });
-  // デバッグ: 最初のアイテムのフィールドを出力
-  if (unique.length > 0) {
-    const first = unique[0];
-    console.log('[eBay Debug] itemWebUrl:', first.itemWebUrl);
-    console.log('[eBay Debug] itemHref:', first.itemHref);
-    console.log('[eBay Debug] itemCreationDate:', first.itemCreationDate);
-    console.log('[eBay Debug] keys:', Object.keys(first).join(', '));
-  }
   // itemCreationDateがないアイテムは除外（偽の日付でグラフを汚さない）
   const withDate = unique.filter((item: any) => item.itemCreationDate);
   const mapped = await Promise.all(
