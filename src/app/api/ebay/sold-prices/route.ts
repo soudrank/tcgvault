@@ -38,16 +38,16 @@ export async function GET(request: NextRequest) {
   const cacheKey = [cardName, source, grade, agency].filter(Boolean).join('|').toLowerCase();
 
   try {
-    // キャッシュチェック
-    const cached = await getCachedResponse(cacheKey);
-    if (cached) {
-      return NextResponse.json(cached, {
-        headers: {
-          'Cache-Control': 'public, max-age=3600',
-          'X-Cache': 'HIT',
-        },
-      });
-    }
+    // キャッシュチェック（デバッグ中は無効化）
+    // const cached = await getCachedResponse(cacheKey);
+    // if (cached) {
+    //   return NextResponse.json(cached, {
+    //     headers: {
+    //       'Cache-Control': 'public, max-age=3600',
+    //       'X-Cache': 'HIT',
+    //     },
+    //   });
+    // }
 
     let items;
 
