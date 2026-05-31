@@ -82,14 +82,28 @@ export default function PrivacyPage() {
           </div>
 
           <div style={cardStyle}>
-            <SectionHeader num="06" title="データの削除" />
+            <SectionHeader num="06" title="サブスクリプション" />
+            <p style={{ ...bodyStyle, marginBottom: 16 }}>
+              本アプリでは、追加機能を利用できる有料プラン「TreBase Pro」を提供しています。
+            </p>
+            <ul style={listStyle}>
+              <li style={listItemStyle}><span style={hlStyle}>料金</span> — 月額プラン ¥500 / 年額プラン ¥5,000</li>
+              <li style={listItemStyle}><span style={hlStyle}>課金方法</span> — お支払いはApple IDに紐づくアカウントに請求されます。</li>
+              <li style={listItemStyle}><span style={hlStyle}>自動更新</span> — サブスクリプションは期間終了日の24時間前までにキャンセルされない限り自動更新されます。更新料金は期間終了前24時間以内に請求されます。</li>
+              <li style={listItemStyle}><span style={hlStyle}>管理・解約</span> — サブスクリプションの管理・キャンセルは、購入後にApp Storeのアカウント設定から行えます。</li>
+              <li style={listItemStyle}><span style={hlStyle}>無料トライアル</span> — 無料トライアル期間が提供されている場合、未使用分はサブスクリプション購入時に失効します。</li>
+            </ul>
+          </div>
+
+          <div style={cardStyle}>
+            <SectionHeader num="07" title="データの削除" />
             <p style={bodyStyle}>
               アカウントを削除すると、関連するすべてのデータが削除されます。削除をご希望の場合は、下記の連絡先までお問い合わせください。
             </p>
           </div>
 
           <div style={cardStyle}>
-            <SectionHeader num="07" title="お問い合わせ" />
+            <SectionHeader num="08" title="お問い合わせ" />
             <p style={bodyStyle}>
               プライバシーに関するご質問は、以下のメールアドレスまでお問い合わせください。
             </p>
