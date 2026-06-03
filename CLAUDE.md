@@ -37,14 +37,3 @@ Best Practices
 – Prefer async/await over then/catch
 – Use absolute imports (`@/`)
 
-CSS修正ルール
-
-- 既存のCSSクラスを別の要素に流用するな。
-  値が1つでも違うなら専用クラスを作れ。
-- CSSクラスを付ける前に、そのクラスの定義
-  （プロパティ、keyframe、疑似要素すべて）
-  を読め。
-- inline styleとCSSクラスで同じプロパティ
-  を設定するな。どちらか片方に統一しろ。
-- 「動いた」ではなく「なぜ動くか」を説明
-  できない修正をするな。

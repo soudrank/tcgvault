@@ -5,6 +5,34 @@ import { createAdminClient } from '@/lib/supabase/admin';
 
 const CACHE_TTL_HOURS = 24;
 
+function getToday(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+async function trackUsage(field: 'ebay_calls' | 'cache_hits') {
+  try {
+    const supabase = createAdminClient();
+    const today = getToday();
+    const { data } = await supabase
+      .from('daily_api_usage')
+      .select('*')
+      .eq('date', today)
+      .single();
+    if (data) {
+      await supabase
+        .from('daily_api_usage')
+        .update({ [field]: (data[field] || 0) + 1, updated_at: new Date().toISOString() })
+        .eq('date', today);
+    } else {
+      await supabase
+        .from('daily_api_usage')
+        .insert({ date: today, [field]: 1 });
+    }
+  } catch {
+    // Don't block the response
+  }
+}
+
 async function getCachedResponse(queryKey: string) {
   const supabase = createAdminClient();
   const cutoff = new Date(Date.now() - CACHE_TTL_HOURS * 3600 * 1000).toISOString();
@@ -42,6 +70,7 @@ export async function GET(request: NextRequest) {
     if (!noCache) {
       const cached = await getCachedResponse(cacheKey);
       if (cached) {
+        trackUsage('cache_hits');
         return NextResponse.json(cached, {
           headers: {
             'Cache-Control': 'public, max-age=3600',
@@ -69,7 +98,7 @@ export async function GET(request: NextRequest) {
 
     const responseBody = { items };
 
-    // キャッシュに保存（非同期、レスポンスをブロックしない）
+    trackUsage('ebay_calls');
     setCachedResponse(cacheKey, responseBody).catch((e) =>
       console.warn('[eBay Cache] Failed to save:', e)
     );

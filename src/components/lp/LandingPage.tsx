@@ -313,15 +313,6 @@ export default function LandingPage() {
                     デモを見る
                   </button>
                 </div>
-                <div className="flex items-center gap-6 mt-10 justify-center lg:justify-start" style={{ animation: 'slide-up 0.6s 0.4s cubic-bezier(0.16,1,0.3,1) both' }}>
-                  <div className="flex -space-x-2">
-                    <div className="w-8 h-8 rounded-full bg-surface-500 border-2 border-surface-900 flex items-center justify-center text-[10px] font-bold text-gold-400">T</div>
-                    <div className="w-8 h-8 rounded-full bg-surface-500 border-2 border-surface-900 flex items-center justify-center text-[10px] font-bold text-gold-400">K</div>
-                    <div className="w-8 h-8 rounded-full bg-surface-500 border-2 border-surface-900 flex items-center justify-center text-[10px] font-bold text-gold-400">S</div>
-                    <div className="w-8 h-8 rounded-full bg-surface-600 border-2 border-surface-900 flex items-center justify-center text-[10px] font-medium text-white/40">+</div>
-                  </div>
-                  <span className="text-xs text-white/30">β版ユーザー <span className="text-white/50 font-medium">1,200人+</span> が利用中</span>
-                </div>
               </div>
 
               {/* Right: Card Slab Visual (desktop only) */}

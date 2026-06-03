@@ -101,6 +101,28 @@ export async function GET(request: Request) {
     }
   }
 
+  // Record cron API calls
+  const today = new Date().toISOString().slice(0, 10);
+  const { data: existing } = await supabase
+    .from('daily_api_usage')
+    .select('*')
+    .eq('date', today)
+    .single();
+  if (existing) {
+    await supabase
+      .from('daily_api_usage')
+      .update({
+        ebay_calls: (existing.ebay_calls || 0) + success,
+        cron_calls: (existing.cron_calls || 0) + success,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('date', today);
+  } else {
+    await supabase
+      .from('daily_api_usage')
+      .insert({ date: today, ebay_calls: success, cron_calls: success });
+  }
+
   return NextResponse.json({
     uniqueQueries: entries.length,
     success,
