@@ -6,7 +6,7 @@ import { createAdminClient } from '@/lib/supabase/admin';
 const CACHE_TTL_HOURS = 24;
 
 function getToday(): string {
-  return new Date().toISOString().slice(0, 10);
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
 }
 
 async function trackUsage(field: 'ebay_calls' | 'cache_hits') {

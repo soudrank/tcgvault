@@ -13,15 +13,14 @@ export async function GET(request: NextRequest) {
 
   // API usage (last 7 days)
   const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 3600 * 1000)
-    .toISOString()
-    .slice(0, 10);
+    .toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
   const { data: usageData } = await supabase
     .from('daily_api_usage')
     .select('*')
     .gte('date', sevenDaysAgo)
     .order('date', { ascending: false });
 
-  const today = now.toISOString().slice(0, 10);
+  const today = now.toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
   const todayUsage = usageData?.find((d) => d.date === today);
 
   // Cache stats

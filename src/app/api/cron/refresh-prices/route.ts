@@ -102,7 +102,7 @@ export async function GET(request: Request) {
   }
 
   // Record cron API calls
-  const today = new Date().toISOString().slice(0, 10);
+  const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
   const { data: existing } = await supabase
     .from('daily_api_usage')
     .select('*')
