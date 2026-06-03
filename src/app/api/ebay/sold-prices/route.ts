@@ -33,19 +33,22 @@ export async function GET(request: NextRequest) {
   const source = request.nextUrl.searchParams.get('source');
   const grade = request.nextUrl.searchParams.get('grade');
   const agency = request.nextUrl.searchParams.get('agency');
+  const noCache = request.nextUrl.searchParams.get('nocache') === '1';
 
   // キャッシュキー: 全パラメータを結合
   const cacheKey = [cardName, source, grade, agency].filter(Boolean).join('|').toLowerCase();
 
   try {
-    const cached = await getCachedResponse(cacheKey);
-    if (cached) {
-      return NextResponse.json(cached, {
-        headers: {
-          'Cache-Control': 'public, max-age=3600',
-          'X-Cache': 'HIT',
-        },
-      });
+    if (!noCache) {
+      const cached = await getCachedResponse(cacheKey);
+      if (cached) {
+        return NextResponse.json(cached, {
+          headers: {
+            'Cache-Control': 'public, max-age=3600',
+            'X-Cache': 'HIT',
+          },
+        });
+      }
     }
 
     let items;
