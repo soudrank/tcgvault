@@ -27,7 +27,7 @@ export default function PrivacyPage() {
             プライバシーポリシー
           </h1>
           <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)' }}>
-            最終更新日: 2026年5月31日
+            最終更新日: 2026年6月5日
           </p>
         </div>
 
@@ -81,6 +81,7 @@ export default function PrivacyPage() {
             </p>
           </div>
 
+          {/* サブスクリプション実装時に復活させる
           <div style={cardStyle}>
             <SectionHeader num="06" title="サブスクリプション" />
             <p style={{ ...bodyStyle, marginBottom: 16 }}>
@@ -94,16 +95,17 @@ export default function PrivacyPage() {
               <li style={listItemStyle}><span style={hlStyle}>無料トライアル</span> — 無料トライアル期間が提供されている場合、未使用分はサブスクリプション購入時に失効します。</li>
             </ul>
           </div>
+          */}
 
           <div style={cardStyle}>
-            <SectionHeader num="07" title="データの削除" />
+            <SectionHeader num="06" title="データの削除" />
             <p style={bodyStyle}>
               アカウントを削除すると、関連するすべてのデータが削除されます。削除をご希望の場合は、下記の連絡先までお問い合わせください。
             </p>
           </div>
 
           <div style={cardStyle}>
-            <SectionHeader num="08" title="お問い合わせ" />
+            <SectionHeader num="07" title="お問い合わせ" />
             <p style={bodyStyle}>
               プライバシーに関するご質問は、以下のメールアドレスまでお問い合わせください。
             </p>
