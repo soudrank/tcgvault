@@ -27,7 +27,7 @@ export default function PrivacyPage() {
             プライバシーポリシー
           </h1>
           <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)' }}>
-            最終更新日: 2026年6月5日
+            最終更新日: 2026年6月12日
           </p>
         </div>
 
@@ -100,7 +100,7 @@ export default function PrivacyPage() {
           <div style={cardStyle}>
             <SectionHeader num="06" title="データの削除" />
             <p style={bodyStyle}>
-              アカウントを削除すると、関連するすべてのデータが削除されます。削除をご希望の場合は、下記の連絡先までお問い合わせください。
+              アプリ内の設定画面からアカウントを削除できます。アカウントを削除すると、登録済みのカードデータを含むすべての関連データが完全に削除され、復元はできません。
             </p>
           </div>
 
@@ -110,7 +110,7 @@ export default function PrivacyPage() {
               プライバシーに関するご質問は、以下のメールアドレスまでお問い合わせください。
             </p>
             <p style={{ marginTop: 12, fontSize: 14, fontWeight: 500, color: '#e8b830' }}>
-              gnr.khei@gmail.com
+              trebase.app@gmail.com
             </p>
           </div>
         </div>
