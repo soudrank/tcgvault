@@ -75,6 +75,10 @@ export default function TopPage() {
             プライバシーポリシー
           </Link>
           <span>·</span>
+          <a href="mailto:trebase.app@gmail.com" style={{ color: 'rgba(255,255,255,0.2)', textDecoration: 'none' }}>
+            お問い合わせ
+          </a>
+          <span>·</span>
           <span>© 2026 TreBase</span>
         </div>
       </div>
