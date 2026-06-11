@@ -109,8 +109,8 @@ export default function PrivacyPage() {
             <p style={bodyStyle}>
               プライバシーに関するご質問は、以下のメールアドレスまでお問い合わせください。
             </p>
-            <p style={{ marginTop: 12, fontSize: 14, fontWeight: 500, color: '#e8b830' }}>
-              trebase.app@gmail.com
+            <p style={{ marginTop: 12 }}>
+              <a href="mailto:trebase.app@gmail.com" style={{ fontSize: 14, fontWeight: 500, color: '#e8b830', textDecoration: 'none' }}>お問い合わせ</a>
             </p>
           </div>
         </div>

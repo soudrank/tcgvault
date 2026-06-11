@@ -763,7 +763,7 @@ export default function LandingPage() {
               <div className="flex items-center gap-6">
                 <Link href="/terms" className="text-xs text-white/25 hover:text-white/50 transition-colors">利用規約</Link>
                 <Link href="/privacy" className="text-xs text-white/25 hover:text-white/50 transition-colors">プライバシーポリシー</Link>
-                <Link href="/contact" className="text-xs text-white/25 hover:text-white/50 transition-colors">お問い合わせ</Link>
+                <a href="mailto:trebase.app@gmail.com" className="text-xs text-white/25 hover:text-white/50 transition-colors">お問い合わせ</a>
               </div>
               <div className="text-[11px] text-white/15">© 2025 Trecahub. All rights reserved.</div>
             </div>
