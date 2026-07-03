@@ -4,9 +4,9 @@ import { fetchEbayPrices } from '@/lib/ebay';
 
 export const maxDuration = 60;
 
-const BATCH_SIZE = 5;
-const DELAY_MS = 2000;
-const CARDS_PER_RUN = 80;
+const BATCH_SIZE = 10;
+const DELAY_MS = 1000;
+const CARDS_PER_RUN = 200;
 
 export async function GET(request: Request) {
   const authHeader = request.headers.get('authorization');
