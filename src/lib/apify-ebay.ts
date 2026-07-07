@@ -15,16 +15,16 @@ export async function fetchEbaySoldPrices(query: string): Promise<EbaySoldItem[]
   if (!apiToken) throw new Error('APIFY_API_TOKEN not set');
 
   const actorId = 'oTtB3VgfuE9GtxQt2';
-  const runUrl = `${APIFY_BASE_URL}/acts/${actorId}/run-sync-get-dataset-items?token=${apiToken}&timeout=120`;
+  const runUrl = `${APIFY_BASE_URL}/acts/${actorId}/run-sync-get-dataset-items?token=${apiToken}&timeout=50`;
 
   const res = await fetch(runUrl, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       keywords: [query],
-      count: 30,
+      count: 100,
       condition: '',
-      categoryId: '183454',
+      categoryId: '0',
     }),
   });
 
@@ -42,13 +42,18 @@ export async function fetchEbaySoldPrices(query: string): Promise<EbaySoldItem[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return data
     .map((item: any) => {
-      // 価格: "Sold" フィールド (数値)
-      const soldPrice = parseFloat(String(item.Sold || item.sold || item.price || '0').replace(/[^0-9.]/g, ''));
-      if (isNaN(soldPrice) || soldPrice <= 0) return null;
-
-      // 送料を加算
-      const shipping = parseFloat(String(item.Shipping || item.shipping || '0').replace(/[^0-9.]/g, ''));
-      const totalPrice = soldPrice + (isNaN(shipping) ? 0 : shipping);
+      // 価格: totalPrice(送料込み) or soldPrice + shippingPrice
+      const total = parseFloat(String(item.totalPrice || '0').replace(/[^0-9.]/g, ''));
+      let totalPrice: number;
+      if (!isNaN(total) && total > 0) {
+        totalPrice = total;
+      } else {
+        const soldPrice = parseFloat(String(item.soldPrice || item.Sold || item.sold || item.price || '0').replace(/[^0-9.]/g, ''));
+        if (isNaN(soldPrice) || soldPrice <= 0) return null;
+        const shipping = parseFloat(String(item.shippingPrice || item.Shipping || item.shipping || '0').replace(/[^0-9.]/g, ''));
+        totalPrice = soldPrice + (isNaN(shipping) ? 0 : shipping);
+      }
+      if (totalPrice <= 0) return null;
 
       // 通貨
       const currency = String(item.Currency || item.currency || item.soldCurrency || 'USD');
