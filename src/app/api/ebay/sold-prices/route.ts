@@ -3,6 +3,8 @@ import { fetchEbayPrices } from '@/lib/ebay';
 import { fetchEbaySoldPrices } from '@/lib/apify-ebay';
 import { createAdminClient } from '@/lib/supabase/admin';
 
+export const maxDuration = 60;
+
 const CACHE_TTL_HOURS = 24;
 
 function getToday(): string {
@@ -105,7 +107,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(responseBody, {
       headers: {
-        'Cache-Control': 'public, max-age=3600',
+        'Cache-Control': source === 'apify' ? 'no-store' : 'public, max-age=3600',
         'X-Cache': 'MISS',
       },
     });
