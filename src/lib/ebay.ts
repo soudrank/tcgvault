@@ -9,6 +9,7 @@ interface EbayPriceItem {
   title: string;
   currency: string;
   item_url: string;
+  image_url: string | null;
 }
 
 // 為替レートキャッシュ（1時間）
@@ -140,6 +141,7 @@ export async function fetchEbayPrices(
       title: item.title || '',
       currency: item.price?.currency || 'USD',
       item_url: item.itemAffiliateWebUrl || item.itemWebUrl || '',
+      image_url: item.image?.imageUrl || item.thumbnailImages?.[0]?.imageUrl || null,
     })),
   );
   return mapped.filter((item: EbayPriceItem) => item.price > 0);
