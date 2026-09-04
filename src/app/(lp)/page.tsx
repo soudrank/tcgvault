@@ -5,9 +5,6 @@ export default function TopPage() {
     <div style={{
       minHeight: '100vh',
       background: '#040408',
-      backgroundImage: 'url(/bg.webp)',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
       fontFamily: "'Noto Sans JP', sans-serif",
       display: 'flex',
       flexDirection: 'column' as const,

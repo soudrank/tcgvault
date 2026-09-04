@@ -105,6 +105,7 @@ export async function fetchEbayPrices(
     headers: {
       Authorization: `Bearer ${token}`,
       'X-EBAY-C-MARKETPLACE-ID': 'EBAY_US',
+      'X-EBAY-C-ENDUSERCTX': 'affiliateCampaignId=5339202300&affiliateReferenceId=trebase',
     },
     next: { revalidate: 3600 },
   });
@@ -138,7 +139,7 @@ export async function fetchEbayPrices(
       recorded_at: item.itemCreationDate,
       title: item.title || '',
       currency: item.price?.currency || 'USD',
-      item_url: item.itemWebUrl || '',
+      item_url: item.itemAffiliateWebUrl || item.itemWebUrl || '',
     })),
   );
   return mapped.filter((item: EbayPriceItem) => item.price > 0);
