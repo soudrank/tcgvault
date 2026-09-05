@@ -106,7 +106,7 @@ export async function fetchEbayPrices(
     headers: {
       Authorization: `Bearer ${token}`,
       'X-EBAY-C-MARKETPLACE-ID': 'EBAY_US',
-      'X-EBAY-C-ENDUSERCTX': 'affiliateCampaignId=5339202300&affiliateReferenceId=trebase',
+      'X-EBAY-C-ENDUSERCTX': 'affiliateCampaignId=5339202300,affiliateReferenceId=trebase',
     },
     next: { revalidate: 3600 },
   });
